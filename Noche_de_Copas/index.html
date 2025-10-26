@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Noche de Copas</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    min-height: 100vh;
+    padding: 1rem;
+    color: white;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Partículas de fondo */
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    animation: float 20s infinite ease-in-out;
+}
+
+.particle:nth-child(1) { width: 60px; height: 60px; left: 10%; animation-delay: 0s; }
+.particle:nth-child(2) { width: 80px; height: 80px; left: 30%; animation-delay: 3s; }
+.particle:nth-child(3) { width: 50px; height: 50px; left: 50%; animation-delay: 6s; }
+.particle:nth-child(4) { width: 70px; height: 70px; left: 70%; animation-delay: 2s; }
+.particle:nth-child(5) { width: 90px; height: 90px; left: 85%; animation-delay: 5s; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.5; }
+    90% { opacity: 0.5; }
+    100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+}
+
+/* Control de audio */
+.audio-control {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.audio-control:active {
+    transform: scale(0.95);
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.volver-btn {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.8rem 1.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.volver-btn:active {
+    transform: scale(0.95);
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #ffcc00;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+label {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+input, select {
+    width: 100%;
+    padding: 0.9rem;
+    font-size: 1.1rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-weight: 600;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #ffcc00;
+    box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.3);
+}
+
+.btn {
+    width: 100%;
+    padding: 1.1rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 0.8rem;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #ffcc00, #ffaa00);
+    color: #000;
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+    color: white;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #51cf66, #37b24d);
+    color: white;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ff6b6b, #fa5252);
+    color: white;
+}
+
+.timer-display {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffd700;
+    margin: 1rem 0;
+    padding: 0.8rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+}
+
+.timer-warning {
+    color: #ff4444;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.05); }
+}
+
+.nivel {
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    background: rgba(204, 153, 255, 0.3);
+    border-radius: 12px;
+    color: #fff;
+}
+
+#reto {
+    font-size: 1.5rem;
+    padding: 2rem 1.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    text-align: center;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.6;
+    font-weight: 600;
+    box-shadow: inset 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+#jugadores-lista {
+    font-size: 1.2rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    min-height: 50px;
+    line-height: 1.8;
+}
+
+#marcador {
+    font-size: 1.3rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    line-height: 2;
+    white-space: pre-line;
+}
+
+.creator-link {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 15px;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+    transition: all 0.3s ease;
+}
+
+.creator-link:active {
+    transform: scale(0.95);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .btn {
+        font-size: 1.1rem;
+        padding: 1rem;
+    }
+    
+    #reto {
+        font-size: 1.3rem;
+        padding: 1.5rem 1rem;
+        min-height: 130px;
+    }
+    
+    .timer-display {
+        font-size: 1.5rem;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+</div>
+
+<div class="audio-control" onclick="toggleAudio()">
+    <span id="audioIcon">🔊</span>
+</div>
+
+<div class="container">
+    <div class="header">
+        <a href="../index.html" class="volver-btn">⬅ Volver al Menú</a>
+        <h1>🍻 Noche de Copas 🍻</h1>
+    </div>
+
+    <div class="card">
+        <div class="form-group">
+            <label for="jugador">Agregar jugadores (máx 30):</label>
+            <input type="text" id="jugador" placeholder="Nombre del jugador" maxlength="30">
+        </div>
+        <button class="btn btn-primary" onclick="agregarJugador()">➕ Agregar Jugador</button>
+        <div id="jugadores-lista"></div>
+    </div>
+
+    <div class="card">
+        <div class="form-group">
+            <label for="cantidad">¿Cuántos retos?</label>
+            <select id="cantidad">
+                <option value="10">10 retos</option>
+                <option value="50">50 retos</option>
+                <option value="100">100 retos</option>
+                <option value="200">200 retos</option>
+            </select>
+        </div>
+        <button class="btn btn-primary" onclick="iniciarPartida()">🎲 Comenzar Partida</button>
+        <button class="btn btn-secondary" onclick="resetearJuego()">🔄 Resetear Todo</button>
+    </div>
+
+    <div class="card">
+        <div class="timer-display">⏱ <span id="timer">20</span>s</div>
+        <p class="nivel" id="nivel"></p>
+        <div id="reto">Configura el juego y presiona "Comenzar Partida"</div>
+    </div>
+
+    <div class="card">
+        <button class="btn btn-success" onclick="cumplioReto()">✅ Cumplió</button>
+        <button class="btn btn-danger" onclick="noCumplioReto()">❌ No cumplió</button>
+        <div id="marcador"></div>
+    </div>
+
+    <div style="text-align: center;">
+        <a href="https://wa.me/59175597503" target="_blank" class="creator-link">
+            📱 Creador: Stalin Roldan
+        </a>
+    </div>
+</div>
+
+<audio id="backgroundMusic" loop>
+    <source src="../assets/audio/background.mp3" type="audio/mpeg">
+</audio>
+<audio id="sonidoAgregar">
+    <source src="../assets/audio/add.mp3" type="audio/mpeg">
+</audio>
+<audio id="sonidoReto">
+    <source src="../assets/audio/challenge.mp3" type="audio/mpeg">
+</audio>
+<audio id="sonidoCumplio">
+    <source src="../assets/audio/success.mp3" type="audio/mpeg">
+</audio>
+<audio id="sonidoNoCumplio">
+    <source src="../assets/audio/fail.mp3" type="audio/mpeg">
+</audio>
+<audio id="sonidoBoton">
+    <source src="../assets/audio/click.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+let jugadores = [];
+let puntajes = {};
+let indiceJugador = 0;
+let retosPorJugador = {};
+let indiceActual = 0;
+let audioEnabled = false;
+
+const categorias = {
+  picante: [
+    "Besa a alguien en la mejilla o toma 1 trago",
+    "Haz un baile sensual de 10 segundos",
+    "Di tu fantasía secreta o bebe 2 tragos",
+    "Haz una mirada sexy y lanza un piropo",
+    "Simula una escena romántica atrevida",
+    "Cuenta tu momento más atrevido",
+    "Di algo sexy al oído de alguien",
+    "Besa tu mano como si fuera tu crush",
+    "Haz un movimiento de cadera lento",
+    "Toca la frente de alguien y dile algo atrevido",
+    "Haz un baile erótico de espaldas o bebe 2 tragos",
+    "Dile a alguien algo atrevido en secreto",
+    "Cuenta tu beso más apasionado o toma 1 trago",
+    "Haz contacto visual sexy con alguien por 10 segundos",
+    "Simula una escena de cita caliente",
+    "Haz una pose seductora y sostenla 5 segundos",
+    "Revela una fantasía o bebe 2 tragos",
+    "Envíale un emoji sugerente a alguien del grupo",
+    "Haz una imitación de alguien coqueteando",
+    "Muerde tu labio y lanza un piropo picante"
+  ],
+  divertido: [
+    "Cuenta un chiste malo",
+    "Imita a un animal durante 15 segundos",
+    "Haz una escena de telenovela dramática",
+    "Canta el coro de una canción ridícula",
+    "Haz una voz de caricatura por 30 segundos",
+    "Actúa como si te ganaras la lotería",
+    "Haz un grito raro",
+    "Cuenta una historia absurda",
+    "Haz un baile tonto",
+    "Ríe como un supervillano",
+    "Cuenta una historia que parezca mentira",
+    "Haz una mueca hasta que todos rían o bebe",
+    "Baila con un objeto como si fuera tu pareja",
+    "Canta un comercial de TV con pasión",
+    "Imita a alguien famoso diciendo tonterías",
+    "Haz un show de talentos absurdo",
+    "Haz una mini escena como si lloraras en novela",
+    "Haz ruidos raros durante 10 segundos",
+    "Ponte un sombrero o algo en la cabeza y modela",
+    "Haz reír al grupo o bebe 2 tragos"
+  ],
+  romantico: [
+    "Di algo romántico a alguien al azar",
+    "Crea un apodo tierno para alguien",
+    "Declara tu amor falso dramáticamente",
+    "Escribe un poema de 3 líneas",
+    "Simula una pedida de mano",
+    "Canta una frase romántica",
+    "Haz un brindis por el amor",
+    "Imita una escena de película romántica",
+    "Haz contacto visual por 5 segundos con alguien",
+    "Cuenta tu cita ideal",
+    "Di tu frase de ligue más usada o toma un trago",
+    "Cuenta tu peor cita y bebe si fue contigo mismo",
+    "Dile a alguien lo lindo que se ve hoy",
+    "Simula una canción romántica con ritmo ridículo",
+    "Lanza un beso y el que lo atrape da un cumplido",
+    "Crea un apodo cursi para alguien",
+    "Describe una cita perfecta en 10 segundos",
+    "Haz un poema con rima ridícula",
+    "Dile a alguien cómo te conquistaría",
+    "Haz de cuenta que pides matrimonio en la fiesta"
+  ],
+  psicologico: [
+    "¿Qué cambiarías de ti y por qué?",
+    "¿Cuál es tu mayor miedo secreto?",
+    "¿Qué valoras más en la amistad?",
+    "¿Qué es lo que no puedes perdonar?",
+    "¿Cuál ha sido tu momento más triste?",
+    "¿Tienes alguna inseguridad?",
+    "Describe una vez que te sentiste vulnerable",
+    "Confiesa algo que te avergüence",
+    "¿Alguna vez rompiste una promesa?",
+    "¿Qué aprendiste de tu última relación?",
+    "Cuenta algo que nunca pensaste decir en público",
+    "¿Cuál es tu mayor miedo en el amor?",
+    "¿Has mentido a alguien importante?",
+    "¿Cuál fue la última vez que lloraste y por qué?",
+    "¿Alguna vez te autosaboteaste?",
+    "¿Qué parte de tu personalidad ocultas?",
+    "¿Te gustaría volver con algún ex?",
+    "¿Qué hábito tóxico tienes?",
+    "¿Has traicionado a alguien?",
+    "¿De qué te arrepientes hoy?"
+  ],
+  trago: [
+    "Bebe 2 tragos si has besado a alguien este mes",
+    "Toma un shot sin usar las manos",
+    "Haz fondo blanco si no tienes pareja",
+    "Bebe si alguna vez fingiste estar sobrio",
+    "Toma 3 tragos si ya estás mareado",
+    "Bebe si has llorado por alguien",
+    "Toma si has mezclado tragos esta noche",
+    "Bebe si tienes una cita pendiente",
+    "Bebe si te has arrepentido de un mensaje",
+    "Haz un brindis y toma 2 tragos",
+    "Bebe 1 trago si estás soltero",
+    "Bebe 2 tragos si tu ex aún te escribe",
+    "Haz fondo blanco si alguna vez engañaste",
+    "Bebe 3 tragos si no recuerdas la noche pasada",
+    "Toma 2 tragos si mezclaste alcoholes hoy",
+    "Bebe si llegaste tarde a la fiesta",
+    "Haz fondo blanco si ya habías bebido antes de venir",
+    "Toma 1 trago si tienes sed",
+    "Bebe 2 tragos si estás feliz hoy",
+    "Haz un brindis por la amistad y bebe 1"
+  ],
+  reto: [
+    "Tómate una foto graciosa o bebe 2 tragos",
+    "Modela como influencer y gira",
+    "Haz 5 sentadillas o bebe 2 tragos",
+    "Actúa como zombie por 10 segundos",
+    "Haz yoga borracho por 5 segundos",
+    "Haz un TikTok falso improvisado",
+    "Toma un objeto y véndelo como si fuera oro",
+    "Camina como pasarela de moda",
+    "Toma una selfie fea con alguien",
+    "Inventa un reto nuevo y hazlo",
+    "Haz 10 saltos y bebe 1 trago",
+    "Toma una selfie graciosa y muéstrala o bebe",
+    "Haz una pasarela sexy improvisada",
+    "Baila reggaeton o bebe 2 tragos",
+    "Pide un objeto al azar y actúa como si fuera valioso",
+    "Haz mímica de una película",
+    "Baila con la silla o bebe 1 trago",
+    "Dibuja en el aire algo y que adivinen",
+    "Manda un audio ridículo a un grupo y muestra o bebe",
+    "Haz una historia falsa sobre tu infancia y convence"
+  ],
+  conocimiento: [
+    "¿Cuántos litros tiene un galón (aprox)?",
+    "¿Cuál es el animal terrestre más rápido?",
+    "¿Cuántos colores tiene el arcoíris?",
+    "¿En qué país se originaron los tacos?",
+    "¿Cuál es la capital de Australia?",
+    "¿Qué planeta es conocido como el planeta rojo?",
+    "¿Cuántos huesos tiene el cuerpo humano adulto?",
+    "¿Quién escribió Don Quijote?",
+    "¿Cuánto dura una vuelta completa de la Tierra sobre su eje?",
+    "¿Cuál es el océano más grande del mundo?",
+    "¿Cuál es el símbolo químico del oro?",
+    "¿Qué instrumento tiene teclas, cuerdas y martillos?",
+    "¿Cuál es el país con forma de bota?",
+    "¿En qué continente está Egipto?",
+    "¿Qué gas respiramos para vivir?",
+    "¿Cuántos días tiene febrero en año bisiesto?",
+    "¿Qué bebida tiene cafeína: café, jugo o agua?",
+    "¿Cuál es el animal que pone huevos y vuela?",
+    "¿Cuántos lados tiene un hexágono?",
+    "¿Cuál es el color que resulta de mezclar rojo y azul?"
+  ],
+  evento: [
+    "Beben 2 tragos los que tengan tatuajes",
+    "Beben 1 trago los que están solteros",
+    "Beben 3 tragos los que se arrepintieron de un ex",
+    "Beben todos los que hayan besado en una fiesta",
+    "Beben los que usen perfume hoy",
+    "Beben 2 tragos los que tengan dos nombres",
+    "Beben si usaron redes sociales en la última hora",
+    "Beben 1 trago los que llegaron en auto",
+    "Beben 3 tragos los que han tenido una cita fallida",
+    "Beben 2 tragos los que han tenido una aventura",
+    "Beben si tienen el celular a la vista",
+    "Beben los que hayan perdido algo hoy",
+    "Beben si su cumpleaños está en este mes",
+    "Beben los que usan lentes o lentes de contacto",
+    "Beben 2 tragos los que tienen apps de citas",
+    "Beben 1 trago si viniste con alguien especial",
+    "Beben los que ya se han reído mucho hoy",
+    "Beben 3 tragos si ya pensaron en su ex esta noche",
+    "Beben 2 tragos si tienen mascota",
+    "Beben todos los que han hecho el ridículo borrachos"
+  ]
+};
+
+function toggleAudio() {
+    audioEnabled = !audioEnabled;
+    const icon = document.getElementById('audioIcon');
+    const music = document.getElementById('backgroundMusic');
+    
+    icon.textContent = audioEnabled ? '🔊' : '🔇';
+    
+    if (audioEnabled) {
+        music.play().catch(e => console.log('Audio blocked:', e));
+    } else {
+        music.pause();
+    }
+    
+    localStorage.setItem('audioEnabled', audioEnabled);
+}
+
+function playSound(id) {
+    if (!audioEnabled) return;
+    const audio = document.getElementById(id);
+    if (audio) {
+        audio.currentTime = 0;
+        audio.play().catch(e => console.log('Sound blocked:', e));
+    }
+}
+
+function agregarJugador() {
+    const input = document.getElementById("jugador");
+    const nombre = input.value.trim();
+    
+    if (!nombre) {
+        alert("Escribe un nombre");
+        return;
+    }
+    
+    if (jugadores.length >= 30) {
+        alert("Máximo 30 jugadores");
+        return;
+    }
+    
+    if (jugadores.includes(nombre)) {
+        alert("Este jugador ya existe");
+        return;
+    }
+    
+    jugadores.push(nombre);
+    puntajes[nombre] = 0;
+    actualizarListaJugadores();
+    input.value = '';
+    playSound("sonidoAgregar");
+}
+
+function actualizarListaJugadores() {
+    const lista = document.getElementById("jugadores-lista");
+    if (jugadores.length === 0) {
+        lista.innerHTML = '<em style="opacity:0.7">No hay jugadores todavía...</em>';
+    } else {
+        lista.textContent = "Jugadores: " + jugadores.join(", ");
+    }
+}
+
+function resetearJuego() {
+    if (jugadores.length > 0 && !confirm("¿Estás seguro de resetear todo?")) {
+        return;
+    }
+    
+    jugadores = [];
+    puntajes = {};
+    indiceJugador = 0;
+    indiceActual = 0;
+    retosPorJugador = {};
+    
+    actualizarListaJugadores();
+    document.getElementById("reto").textContent = "Configura el juego y presiona 'Comenzar Partida'";
+    document.getElementById("nivel").textContent = "";
+    document.getElementById("marcador").textContent = "";
+    
+    if (window.__noche_timer) {
+        window.__noche_timer.detenerYResetear();
+    }
+}
+
+function iniciarPartida() {
+    if (jugadores.length === 0) {
+        alert("Agrega al menos un jugador");
+        return;
+    }
+    
+    const cantidad = parseInt(document.getElementById("cantidad").value);
+    const todosRetos = [].concat(
+        categorias.picante.map(r => ({texto: r, nivel: "🌶️ Picante"})),
+        categorias.divertido.map(r => ({texto: r, nivel: "😂 Divertido"})),
+        categorias.romantico.map(r => ({texto: r, nivel: "💕 Romántico"})),
+        categorias.psicologico.map(r => ({texto: r, nivel: "🧠 Psicológico"})),
+        categorias.trago.map(r => ({texto: r, nivel: "🍺 Trago"})),
+        categorias.reto.map(r => ({texto: r, nivel: "🎯 Reto"})),
+        categorias.conocimiento.map(r => ({texto: r, nivel: "📚 Conocimiento"})),
+        categorias.evento.map(r => ({texto: r, nivel: "🎉 Evento"}))
+    );
+
+    for (let j of jugadores) {
+        retosPorJugador[j] = [...todosRetos].sort(() => 0.5 - Math.random()).slice(0, cantidad);
+    }
+    
+    indiceActual = 0;
+    indiceJugador = 0;
+    mostrarReto();
+    
+    if (window.__noche_timer) {
+        window.__noche_timer.iniciarCuenta();
+    }
+}
+
+function mostrarReto() {
+    const jugador = jugadores[indiceJugador];
+    
+    if (indiceActual >= retosPorJugador[jugador].length) {
+        mostrarGanador();
+        return;
+    }
+    
+    const reto = retosPorJugador[jugador][indiceActual];
+    document.getElementById("nivel").textContent = reto.nivel;
+    document.getElementById("reto").textContent = `${jugador}: ${reto.texto}`;
+    playSound("sonidoReto");
+}
+
+function cumplioReto() {
+    const jugador = jugadores[indiceJugador];
+    puntajes[jugador]++;
+    playSound("sonidoCumplio");
+    avanzarTurno();
+}
+
+function noCumplioReto() {
+    playSound("sonidoNoCumplio");
+    avanzarTurno();
+}
+
+function avanzarTurno() {
+    indiceJugador = (indiceJugador + 1) % jugadores.length;
+    if (indiceJugador === 0) {
+        indiceActual++;
+    }
+    mostrarReto();
+    mostrarMarcador();
+    playSound("sonidoBoton");
+}
+
+function mostrarMarcador() {
+    let texto = "📊 Puntajes:\n";
+    for (let j of jugadores) {
+        texto += `${j}: ${puntajes[j]} puntos\n`;
+    }
+    document.getElementById("marcador").textContent = texto;
+}
+
+function mostrarGanador() {
+    const maxPuntos = Math.max(...Object.values(puntajes));
+    const minPuntos = Math.min(...Object.values(puntajes));
+    const ganadores = jugadores.filter(j => puntajes[j] === maxPuntos);
+    const perdedores = jugadores.filter(j => puntajes[j] === minPuntos);
+    
+    let mensaje = "🎉 ¡FIN DEL JUEGO! 🎉\n\n";
+    mensaje += `🏆 Ganador(es): ${ganadores.join(", ")}\n`;
+    mensaje += `Con ${maxPuntos} punto(s)\n\n`;
+    mensaje += `🍻 Beben 3 tragos: ${perdedores.join(", ")}`;
+    
+    document.getElementById("reto").textContent = mensaje;
+    document.getElementById("nivel").textContent = "";
+    
+    if (window.__noche_timer) {
+        window.__noche_timer.detenerYResetear();
+    }
+}
+
+// Cronómetro
+(function(){
+    let tiempo = 20;
+    let intervalo = null;
+    const timerEl = document.getElementById('timer');
+    
+    function actualizarDisplay(){ 
+        if(timerEl) {
+            timerEl.textContent = String(tiempo);
+            if(tiempo <= 5 && tiempo > 0) {
+                timerEl.classList.add('timer-warning');
+            } else {
+                timerEl.classList.remove('timer-warning');
+            }
+        }
+    }
+    
+    function pararIntervalo(){ 
+        if(intervalo) { 
+            clearInterval(intervalo); 
+            intervalo = null; 
+        } 
+    }
+    
+    function iniciarCuenta(){ 
+        pararIntervalo(); 
+        tiempo = 20; 
+        actualizarDisplay(); 
+        intervalo = setInterval(() => { 
+            tiempo--; 
+            actualizarDisplay();
+            if(tiempo <= 0) {
+                pararIntervalo();
+                tiempo = 0;
+                actualizarDisplay();
+            }
+        }, 1000); 
+    }
+    
+    function reiniciarCronometro() {
+        pararIntervalo();
+        tiempo = 20;
+        actualizarDisplay();
+        iniciarCuenta();
+    }
+    
+    function detenerYResetear() {
+        pararIntervalo();
+        tiempo = 0;
+        actualizarDisplay();
+    }
+    
+    const origCumplio = window.cumplioReto;
+    window.cumplioReto = function(){ 
+        origCumplio(); 
+        reiniciarCronometro();
+    };
+    
+    const origNoCumplio = window.noCumplioReto;
+    window.noCumplioReto = function(){ 
+        origNoCumplio(); 
+        reiniciarCronometro();
+    };
+
+    window.__noche_timer = { iniciarCuenta, reiniciarCronometro, detenerYResetear };
+})();
+
+// Cargar estado del audio
+window.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('audioEnabled');
+    if (saved === 'true') {
+        audioEnabled = true;
+        document.getElementById('audioIcon').textContent = '🔊';
+    }
+    actualizarListaJugadores();
+});
+
+// Enter para agregar jugador
+document.getElementById('jugador').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        agregarJugador();
+    }
+});
+</script>
+
+</body>
+</html>

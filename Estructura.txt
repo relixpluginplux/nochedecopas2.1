@@ -1,0 +1,33 @@
+📦 Juegos_de_Fiesta/
+│
+├── 📄 index.html (Menú Principal Mejorado)
+│
+├── 📁 assets/
+│   ├── 📁 audio/
+│   │   ├── 🎵 background.mp3       (Música de fondo general)
+│   │   ├── 🔊 click.mp3            (Sonido de click/botón)
+│   │   ├── 🔊 add.mp3              (Sonido al agregar jugador)
+│   │   ├── 🔊 challenge.mp3        (Sonido al mostrar reto)
+│   │   ├── 🔊 success.mp3          (Sonido de éxito/cumplió)
+│   │   ├── 🔊 fail.mp3             (Sonido de fallo/no cumplió)
+│   │   ├── 🔊 spin.mp3             (Sonido de girar botella)
+│   │   ├── 🔊 pop.mp3              (Sonido de pop/resultado)
+│   │   └── 🔊 dice.mp3             (Sonido de lanzar dado)
+│   │
+│   ├── 📁 images/
+│   │   ├── 🖼️ background-party.jpg  (Fondo alternativo 1)
+│   │   ├── 🖼️ background-neon.jpg   (Fondo alternativo 2)
+│   │   ├── 🖼️ background-club.jpg   (Fondo alternativo 3)
+│   │   └── 🖼️ logo.png             (Logo opcional)
+│   │
+│   └── 📁 fonts/ (opcional)
+│       └── 🔤 custom-font.woff2
+│
+├── 📁 Noche_de_Copas/
+│   └── 📄 index.html (Noche de Copas Mejorado)
+│
+├── 📁 Juego_de_la_Botella/
+│   └── 📄 index.html (Juego de la Botella Mejorado)
+│
+└── 📁 dado/
+    └── 📄 index.html (Dado 3D Mejorado)
